@@ -17,8 +17,8 @@ spec:
       readCapacityUnits: 5
       writeCapacityUnits: 5
     tags:
-      - key: Service
-        value: fruits
+      Service:
+        fruits
 ---
 apiVersion: dynamodb.aws.crossplane.io/v1alpha1
 kind: Table
@@ -39,5 +39,5 @@ spec:
       readCapacityUnits: 5
       writeCapacityUnits: 5
     tags:
-      - key: Service
-        value: gofunction
+      Service:
+        gofunction
