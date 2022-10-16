@@ -20,6 +20,7 @@ spec:
   forProvider:
     region: 'us-east-1'
     packageType: Zip
+    handler: gofunction-amd64-linux
     environment:
       variables:
         CLOUD_REGION: 'us-east-1'
