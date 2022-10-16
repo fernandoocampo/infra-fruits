@@ -5,23 +5,7 @@ metadata:
   name: somerole
 spec:
   forProvider:
-    assumeRolePolicyDocument: |
-      {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "Service": [
-                        "lambda.amazonaws.com",
-                    ]
-                },
-                "Action": [
-                    "sts:AssumeRole"
-                ]
-            }
-        ]
-      }
+    assumeRolePolicyDocument: "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Action\": [ \"sts:AssumeRole\" ], \"Resource\": \"arn:aws:lambda:us-west-2:000000000000:\" } ] }"
     tags:
       - key: k1
         value: v1

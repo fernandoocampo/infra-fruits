@@ -27,6 +27,9 @@ list-functions:
 list-buckets:
 	aws s3api list-buckets --endpoint-url http://localhost:4566 --region us-east-1
 
+list-roles:
+	aws iam list-roles --endpoint-url http://localhost:4566 --region us-east-1
+
 scan-fruits:
 	aws dynamodb scan --table-name fruits --endpoint-url http://localhost:4566 --region us-east-1
 
