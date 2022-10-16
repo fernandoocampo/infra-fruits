@@ -1,0 +1,39 @@
+apiVersion: sns.aws.crossplane.io/v1beta1
+kind: Topic
+metadata:
+  name: fruits
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    name: 'fruits'
+    region: 'us-east-1'
+    tags:
+    - key: Service
+      value: fruits
+---
+apiVersion: sqs.aws.crossplane.io/v1beta1
+kind: Queue
+metadata:
+  name: audit-fruits
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    region: 'us-east-1'
+    tags:
+    - key: Service
+      value: gofunction
+---
+apiVersion: sns.aws.crossplane.io/v1beta1
+kind: Subscription
+metadata:
+  name: fruits-audit-queue
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    protocol: 'sqs'
+    topicArn: 'arn:aws:sns:us-east-1:000000000000:fruits'
+    endpoint: 'arn:aws:sqs:us-east-1:000000000000:audit-fruits'
+    region: 'us-east-1'

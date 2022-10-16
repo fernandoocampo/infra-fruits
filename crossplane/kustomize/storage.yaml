@@ -1,0 +1,43 @@
+apiVersion: dynamodb.aws.crossplane.io/v1alpha1
+kind: Table
+metadata:
+  name: fruits-table
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    region: 'us-east-1'
+    attributeDefinitions:
+      - attributeName: id
+        attributeType: S
+    keySchema:
+      - attributeName: id
+        keyType: HASH
+    provisionedThroughput:
+      readCapacityUnits: 5
+      writeCapacityUnits: 5
+    tags:
+    - key: Service
+      value: fruits
+---
+apiVersion: dynamodb.aws.crossplane.io/v1alpha1
+kind: Table
+metadata:
+  name: audit_fruits
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    region: 'us-east-1'
+    attributeDefinitions:
+      - attributeName: id
+        attributeType: S
+    keySchema:
+      - attributeName: id
+        keyType: HASH
+    provisionedThroughput:
+      readCapacityUnits: 5
+      writeCapacityUnits: 5
+    tags:
+    - key: Service
+      value: gofunction
