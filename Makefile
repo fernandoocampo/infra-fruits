@@ -40,7 +40,7 @@ scan-audit-fruits:
 	aws dynamodb scan --table-name audit-fruits --endpoint-url http://localhost:4566 --region us-east-1
 
 signal-fruit:
-	aws sns publish --topic-arn "arn:aws:sns:us-east-1:000000000000:fruits" --message '{"source_id": "1d952b94-a5db-4d63-a500-b486dd96e8b2","name": "lemon","variety": "lima","price": 2.50}' --endpoint-url http://localhost:4566 --region us-east-1
+	aws sns publish --topic-arn "arn:aws:sns:us-east-1:000000000000:fruits" --message '{"source_id": "1d952b94-a5db-4d63-a500-b486dd96e8b2","name": "lemon-sns","variety": "lima-sns","price": 2.50}' --endpoint-url http://localhost:4566 --region us-east-1
 
 event-source-mapping:
 	aws lambda create-event-source-mapping --function-name gofunction --batch-size 5 --maximum-batching-window-in-seconds 60 --event-source-arn arn:aws:sqs:us-east-1:000000000000:audit-fruits --endpoint-url http://localhost:4566 --region us-east-1
