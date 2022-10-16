@@ -22,8 +22,8 @@ spec:
     packageType: Zip
     environment:
       variables:
-        - CLOUD_REGION: 'us-east-1'
-        - CLOUD_ENDPOINT_URL: 'http://localhost:4566'
+        CLOUD_REGION: 'us-east-1'
+        CLOUD_ENDPOINT_URL: 'http://localhost:4566'
     code:
       s3Bucket: function-bucket
       s3Key: gofunction-amd64-linux.zip
