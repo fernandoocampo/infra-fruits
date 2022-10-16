@@ -9,8 +9,8 @@ spec:
     name: 'fruits'
     region: 'us-east-1'
     tags:
-      Service:
-        fruits
+      - key: Service
+        value: fruits
 ---
 apiVersion: sqs.aws.crossplane.io/v1beta1
 kind: Queue
