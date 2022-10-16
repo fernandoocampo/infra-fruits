@@ -7,5 +7,5 @@ module "messaging_module" {
 module "storage_module" {
   source             = "./modules/storage"
   fruits_table       = "fruits"
-  audit_fruits_table = "audit_fruits"
+  audit_fruits_table = "audit-fruits"
 }

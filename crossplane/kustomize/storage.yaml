@@ -23,7 +23,7 @@ spec:
 apiVersion: dynamodb.aws.crossplane.io/v1alpha1
 kind: Table
 metadata:
-  name: audit_fruits
+  name: audit-fruits
 spec:
   providerConfigRef:
     name: default
