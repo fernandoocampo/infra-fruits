@@ -20,6 +20,7 @@ spec:
   forProvider:
     region: 'us-east-1'
     packageType: Zip
+    runtime: go1.x
     handler: gofunction-amd64-linux
     environment:
       variables:
