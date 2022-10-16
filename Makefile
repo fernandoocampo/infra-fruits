@@ -1,4 +1,4 @@
-start: run-localstack create-bucket
+start: run-localstack
 
 run-localstack:
 	docker-compose up --build -d

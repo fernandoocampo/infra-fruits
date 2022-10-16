@@ -1,3 +1,33 @@
+---
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: Role
+metadata:
+  name: somerole
+spec:
+  forProvider:
+    assumeRolePolicyDocument: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": [
+                        "lambda.amazonaws.com",
+                    ]
+                },
+                "Action": [
+                    "sts:AssumeRole"
+                ]
+            }
+        ]
+      }
+    tags:
+      - key: k1
+        value: v1
+  providerConfigRef:
+    name: example
+---
 apiVersion: lambda.aws.crossplane.io/v1beta1
 kind: Function
 metadata:

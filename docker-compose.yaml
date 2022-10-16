@@ -8,6 +8,22 @@ services:
             - SERVICES=dynamodb,lambda,sqs,sns,s3
         ports: 
             - '4566:4566'
+    setup-resources:
+        image: amazon/aws-cli
+        environment:
+        - AWS_ACCESS_KEY_ID=dummyaccess
+        - AWS_SECRET_ACCESS_KEY=dummysecret
+        - AWS_DEFAULT_REGION=us-east-1
+        entrypoint: /bin/sh -c
+        command: >
+            "
+                # Needed so all localstack components will startup correctly (i'm sure there's a better way to do this)
+                sleep 5;
+                aws s3api create-bucket --bucket function-bucket --endpoint-url http://localstack:4566 --region us-east-1;
+                # you can go on and put initial items in tables...
+            "
+        depends_on:
+            - localstack
 
 networks:
   default:
