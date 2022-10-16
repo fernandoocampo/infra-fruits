@@ -23,7 +23,6 @@ spec:
     code:
       s3Bucket: function-bucket
       s3Key: gofunction-amd64-linux.zip
-    roleRef:
-      name: somerole
+    role: 'arn:aws:iam::000000000000:role/somerole'
     tags:
       Service: gofunction
