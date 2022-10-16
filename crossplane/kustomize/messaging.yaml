@@ -9,8 +9,8 @@ spec:
     name: 'fruits'
     region: 'us-east-1'
     tags:
-    - key: Service
-      value: fruits
+      - key: Service
+        value: fruits
 ---
 apiVersion: sqs.aws.crossplane.io/v1beta1
 kind: Queue
@@ -22,8 +22,8 @@ spec:
   forProvider:
     region: 'us-east-1'
     tags:
-    - key: Service
-      value: gofunction
+      - key: Service
+        value: gofunction
 ---
 apiVersion: sns.aws.crossplane.io/v1beta1
 kind: Subscription
