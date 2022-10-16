@@ -8,6 +8,9 @@ services:
             - SERVICES=dynamodb,lambda,sqs,sns,s3
         ports: 
             - '4566:4566'
+        networks:
+            default:
+                ipv4_address: 172.18.0.3
     setup-resources:
         image: amazon/aws-cli
         environment:
