@@ -10,5 +10,7 @@ spec:
     code:
       s3Bucket: function-bucket
       s3Key: gofunction-amd64-linux.zip
+    roleRef:
+      name: somerole
     tags:
       Service: gofunction

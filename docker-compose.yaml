@@ -8,3 +8,8 @@ services:
             - SERVICES=dynamodb,lambda,sqs,sns,s3
         ports: 
             - '4566:4566'
+
+networks:
+  default:
+    name: kind
+    external: true
