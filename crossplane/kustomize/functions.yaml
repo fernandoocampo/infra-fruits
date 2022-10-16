@@ -1,0 +1,14 @@
+apiVersion: lambda.aws.crossplane.io/v1beta1
+kind: Function
+metadata:
+  name: gofunction
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    region: 'us-east-1'
+    code:
+      s3Bucket: function-bucket
+      s3Key: gofunction-amd64-linux.zip
+    tags:
+      Service: gofunction

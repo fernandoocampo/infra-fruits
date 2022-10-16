@@ -1,7 +1,7 @@
 apiVersion: dynamodb.aws.crossplane.io/v1alpha1
 kind: Table
 metadata:
-  name: fruits-table
+  name: fruits
 spec:
   providerConfigRef:
     name: default
