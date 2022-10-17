@@ -5,10 +5,27 @@ metadata:
   name: somerole
 spec:
   forProvider:
-    assumeRolePolicyDocument: "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Action\": [ \"sts:AssumeRole\" ], \"Resource\": \"arn:aws:lambda:us-west-2:000000000000:\" } ] }"
-    tags:
-      - key: k1
-        value: v1
+    assumeRolePolicyDocument: "{\"Version\": \"2012-10-17\",\"Statement\": [{ \"Effect\": \"Allow\", \"Principal\": {\"Service\": \"lambda.amazonaws.com\"}, \"Action\": \"sts:AssumeRole\"}]}"
+---
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: Policy
+metadata:
+  name: somepolicy
+spec:
+  forProvider:
+    name: somepolicy
+    document: "{\"Version\": \"2012-10-17\",\"Statement\": [{ \"Effect\": \"Allow\", \"Action\": \"*:*\", \"Resource\": \"*\"}]}"
+---
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: RolePolicyAttachment
+metadata:
+  name: sample-rolepolicyattachment
+spec:
+  forProvider:
+    policyArnRef:
+      name: somepolicy
+    roleNameRef:
+      name: somerole
 ---
 apiVersion: lambda.aws.crossplane.io/v1beta1
 kind: Function
@@ -20,7 +37,7 @@ spec:
   forProvider:
     region: 'us-east-1'
     packageType: Zip
-    runtime: go1.x
+    runtime: 'go1.x'
     handler: gofunction-amd64-linux
     environment:
       variables:
@@ -29,6 +46,7 @@ spec:
     code:
       s3Bucket: function-bucket
       s3Key: gofunction-amd64-linux.zip
-    role: 'arn:aws:iam::000000000000:role/somerole'
+    roleRef: 
+      name: somerole
     tags:
       Service: gofunction

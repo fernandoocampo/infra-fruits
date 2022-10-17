@@ -1,3 +1,9 @@
+run-localstack:
+	docker-compose up --build -d
+
+stop-localstack:
+	docker-compose down --volumes
+
 init:
 	terraform init
 
