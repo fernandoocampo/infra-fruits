@@ -36,4 +36,5 @@ spec:
     protocol: 'sqs'
     topicArn: 'arn:aws:sns:us-east-1:000000000000:fruits'
     endpoint: 'arn:aws:sqs:us-east-1:000000000000:audit-fruits'
+    rawMessageDelivery: true
     region: 'us-east-1'

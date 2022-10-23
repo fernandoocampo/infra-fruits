@@ -18,6 +18,10 @@ s3/create:
 s3/function-bucket:
 	aws s3 ls s3://function-bucket --recursive --human-readable --summarize --endpoint-url http://localhost:4566 --region us-east-1
 
+.PHONY: sns/create
+sns/create:
+	aws sns create-topic --name fruits --endpoint-url http://localhost:4566 --region us-east-1
+
 .PHONY: sns/list
 sns/list:
 	aws sns list-topics --endpoint-url http://localhost:4566 --region us-east-1
@@ -30,6 +34,18 @@ sns/subscriptions:
 sns/signal:
 	aws sns publish --topic-arn "arn:aws:sns:us-east-1:000000000000:fruits" --message '{"source_id": "1d952b94-a5db-4d63-a500-b486dd96e8b2","name": "lemon-sns","variety": "lima-sns","price": 2.50}' --endpoint-url http://localhost:4566 --region us-east-1
 
+.PHONY: sns/subscribe
+sns/subscribe:
+	aws sns subscribe --topic-arn arn:aws:sns:us-east-1:000000000000:fruits --protocol sqs --notification-endpoint arn:aws:sqs:us-east-1:000000000000:audit-fruits --attributes '{"RawMessageDelivery": "true"}' --endpoint-url http://localhost:4566 --region us-east-1
+
+.PHONY: sns/unsubscribe
+sns/unsubscribe:
+	aws sns unsubscribe --subscription-arn arn:aws:sns:us-east-1:000000000000:fruits:ccb329c0-c8c4-4144-b9e6-58647f146f9a  --endpoint-url http://localhost:4566 --region us-east-1
+
+.PHONY: sqs/create
+sqs/create:
+	aws sqs create-queue --queue-name audit-fruits --endpoint-url http://localhost:4566 --region us-east-1
+
 .PHONY: sqs/list
 sqs/list:
 	aws sqs list-queues --endpoint-url http://localhost:4566 --region us-east-1
@@ -38,9 +54,13 @@ sqs/list:
 sqs/attributes:
 	aws sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/audit-fruits --attribute-names All --endpoint-url http://localhost:4566 --region us-east-1
 
+.PHONY: sqs/signal
+sqs/signal:
+	aws sqs send-message --queue-url http://localhost:4566/000000000000/audit-fruits --message-body '{"source_id": "1d952b94-a5db-4d63-a500-b486dd96e8b2","name": "lemon-sqs","variety": "lima-sqs","price": 2.50}' --endpoint-url http://localhost:4566 --region us-east-1
+
 .PHONY: sqs/get-message
 sqs/get-message:
-	aws sqs receive-message --queue-url http://localhost:4566/000000000000/audit-fruits --attribute-names All --message-attribute-names All --max-number-of-messages 1 --endpoint-url http://localhost:4566 --region us-east-1
+	aws sqs receive-message --queue-url http://localhost:4566/000000000000/audit-fruits --attribute-names All --message-attribute-names All --max-number-of-messages 4 --endpoint-url http://localhost:4566 --region us-east-1
 
 .PHONY: table/list
 table/list:
@@ -49,6 +69,15 @@ table/list:
 .PHONY: table/scan-fruits
 table/scan-fruits:
 	aws dynamodb scan --table-name fruits --endpoint-url http://localhost:4566 --region us-east-1
+
+.PHONY: table/create-audit
+table/create-audit:
+	aws dynamodb create-table \
+	--table-name audit-fruits \
+	--attribute-definitions AttributeName=id,AttributeType=S \
+	--key-schema AttributeName=id,KeyType=HASH \
+	--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+	--endpoint-url http://localhost:4566 --region us-east-1
 
 .PHONY: table/scan-audit
 table/scan-audit:
