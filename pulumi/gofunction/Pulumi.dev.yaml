@@ -1,0 +1,14 @@
+config:
+  aws:region: us-east-1
+  aws:accessKey: test
+  aws:secretKey: test
+  aws:s3ForcePathStyle: 'true'
+  aws:skipCredentialsValidation: 'true'
+  aws:skipRequestingAccountId: 'true'
+  aws:endpoints:
+    - s3: http://localhost:4566
+      s3control: http://localhost:4566
+      s3outposts: http://localhost:4566
+      iam: http://localhost:4566
+      lambda: http://localhost:4566
+      sqs: http://localhost:4566
