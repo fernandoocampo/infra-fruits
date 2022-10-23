@@ -61,7 +61,7 @@ func main() {
 			},
 			PackageType: pulumi.String("Zip"),
 			Runtime:     pulumi.String("go1.x"),
-			Code:        pulumi.NewFileArchive("./lambda/gofunction-amd64-linux.zip"),
+			Code:        pulumi.NewFileArchive("./gofunction/gofunction-amd64-linux.zip"),
 		}
 
 		// Create the lambda using the args.
@@ -85,7 +85,7 @@ func main() {
 			return fmt.Errorf("queue was not found")
 		}
 
-		eventSourceMapping, err := lambda.NewEventSourceMapping(ctx, "example", &lambda.EventSourceMappingArgs{
+		eventSourceMapping, err := lambda.NewEventSourceMapping(ctx, "gofunction-event-sourcing-map", &lambda.EventSourceMappingArgs{
 			EventSourceArn:                 pulumi.String(result.Arn),
 			FunctionName:                   function.Arn,
 			BatchSize:                      pulumi.Int(5),
