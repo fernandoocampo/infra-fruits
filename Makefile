@@ -95,6 +95,10 @@ lambda/source-map:
 lambda/list-source-map:
 	aws lambda list-event-source-mappings --function-name gofunction --endpoint-url http://localhost:4566 --region us-east-1
 
+.PHONY: lambda/list-source-maps
+lambda/list-source-maps:
+	aws lambda list-event-source-mappings --endpoint-url http://localhost:4566 --region us-east-1
+
 .PHONY: iam/roles
 iam/roles:
 	aws iam list-roles --endpoint-url http://localhost:4566 --region us-east-1
@@ -102,6 +106,10 @@ iam/roles:
 .PHONY: iam/policies
 iam/policies:
 	aws iam list-policies --endpoint-url http://localhost:4566 --region us-east-1
+
+.PHONY: k8s/fruits-app
+k8s/fruits-app:
+	kubectl get pod -l app=fruits
 
 .PHONY: k8s/topic
 k8s/topic:
