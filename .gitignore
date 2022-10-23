@@ -37,3 +37,4 @@ backup
 !dev/sandbox-secure.tfvars
 !stage/stage.tfvars
 .DS_Store
+lambda-repo
