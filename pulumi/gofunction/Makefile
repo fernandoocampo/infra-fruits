@@ -6,7 +6,6 @@ clone:
 	git clone git@github.com:fernandoocampo/gofunction.git ./lambda-repo
 
 build-lambda:
-	cd lambda-repo
 	make -C ./lambda-repo all
 
 clean:
