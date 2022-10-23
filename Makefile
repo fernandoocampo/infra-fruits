@@ -139,10 +139,14 @@ k8s/current-context:
 k8s/use-kind-context:
 	kubectl config use-context kind-kind
 
+.PHONY: k8s/grafana
+k8s/grafana:
+	kubectl -n monitoring port-forward svc/kube-prometheus-stack-grafana 3000:80
+
 .PHONY: flux/monitoring-portforward
 flux/monitoring-portforward:
 	kubectl -n monitoring port-forward svc/kube-prometheus-stack-grafana 3000:80
 
 .PHONY: flux/fruits-portforward
 flux/fruits-portforward:
-	kubectl port-forward svc/fruits-service 8080:8080
+	kubectl port-forward svc/fruits-service 9090:8080

@@ -286,5 +286,181 @@ fruits-deployment-7cdd5b768c-5n6zq   1/1     Running   1 (12m ago)   2d22h
 }
 ```
 
+13. Monitoring [flux](https://fluxcd.io/flux/guides/monitoring/).
 
+http://localhost:3000/d/flux-cluster/flux-cluster-stats?orgId=1&refresh=30s
 
+14. Test publishing a message into fruits topic.
+
+```sh
+➜  infra-fruits git:(main) ✗ make sns/signal
+{
+    "MessageId": "0b681bb9-4fd1-4e85-90a3-48053554a574"
+}
+```
+
+Let's see if the message was stored in the `audit-fruits` table.
+
+```sh
+➜  infra-fruits git:(main) ✗ make table/scan-audit
+{
+    "Items": [
+        {
+            "name": {
+                "S": "lemon-sns"
+            },
+            "source_id": {
+                "S": "1d952b94-a5db-4d63-a500-b486dd96e8b2"
+            },
+            "id": {
+                "S": "f2564683-13ab-47cf-9c77-7621edc80c83"
+            },
+            "variety": {
+                "S": "lima-sns"
+            },
+            "price": {
+                "N": "2.5"
+            }
+        }
+    ],
+    "Count": 1,
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+} 
+```
+
+15. Now let's create a fruit from fruits application.
+
+* let's create first a port forwarding to `fruits` application.
+
+```sh
+➜  infra-fruits git:(main) ✗ make flux/fruits-portforward
+kubectl port-forward svc/fruits-service 9090:8080
+I1023 22:22:27.846973   50448 request.go:665] Waited for 1.079813318s due to client-side throttling, not priority and fairness, request: GET:https://127.0.0.1:59524/apis/autoscaling/v2?timeout=32s
+Forwarding from 127.0.0.1:9090 -> 8080
+Forwarding from [::1]:9090 -> 8080
+Handling connection for 9090
+```
+
+* open your rest client and call the endpoint http://localhost:9090/fruit.
+
+```sh
+{
+	"name":               "Avocado",
+	"variety":             "Green",
+	"vault":              "Nicosia",
+	"year":              2022,
+	"price":							 1.46,
+	"country":             "Italy",
+	"province":            "Sicily & Sardinia",
+	"region":             "Etna",
+	"finca":             "Etna",
+	"description":         "brisk acidity",
+	"classification":         "Premium",
+	"local_name":          "avocado",
+	"wiki_page": "@kerinokeefe"
+}
+```
+
+* Check that the new fruit was stored in `fruits` table.
+
+```sh
+{
+    "Items": [
+        {
+            "country": {
+                "S": "Italy"
+            },
+            "year": {
+                "N": "2022"
+            },
+            "finca": {
+                "S": "Etna"
+            },
+            "description": {
+                "S": "brisk acidity"
+            },
+            "classification": {
+                "S": "Premium"
+            },
+            "local_name": {
+                "S": "avocado"
+            },
+            "province": {
+                "S": "Sicily & Sardinia"
+            },
+            "variety": {
+                "S": "Green"
+            },
+            "price": {
+                "N": "1.46"
+            },
+            "name": {
+                "S": "Avocado"
+            },
+            "id": {
+                "S": "e3a7b54a-2c8e-45c0-aef9-ab68b24ecbff"
+            },
+            "region": {
+                "S": "Etna"
+            },
+            "vault": {
+                "S": "Nicosia"
+            },
+            "wiki_page": {
+                "S": "@kerinokeefe"
+            }
+        }
+    ],
+    "Count": 1,
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}
+```
+
+* Let's see if the message was stored in the `audit-fruits` table.
+
+```sh
+➜  infra-fruits git:(main) ✗ make table/scan-audit
+   {
+    "Items": [
+        {
+            "name": {
+                "S": "lemon-sns"
+            },
+            "source_id": {
+                "S": "1d952b94-a5db-4d63-a500-b486dd96e8b2"
+            },
+            "id": {
+                "S": "f2564683-13ab-47cf-9c77-7621edc80c83"
+            },
+            "variety": {
+                "S": "lima-sns"
+            },
+            "price": {
+                "N": "2.5"
+            }
+        },
+        {
+            "name": {
+                "S": "Avocado"
+            },
+            "id": {
+                "S": "a27ae48f-2b3f-4b4b-9b6d-de087401d490"
+            },
+            "source_id": {
+                "S": "e3a7b54a-2c8e-45c0-aef9-ab68b24ecbff"
+            },
+            "variety": {
+                "S": "Green"
+            },
+            "price": {
+                "N": "1.46"
+            }
+        }
+    ],
+    "Count": 2,
+    "ScannedCount": 2,
+    "ConsumedCapacity": null
+}
+```
