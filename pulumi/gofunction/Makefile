@@ -1,12 +1,12 @@
 build: clone build-lambda
 
 clone:
-	rm -rf lambda-repo
-	mkdir lambda-repo
-	git clone git@github.com:fernandoocampo/gofunction.git ./lambda-repo
+	rm -rf gofunction
+	mkdir gofunction
+	git clone git@github.com:fernandoocampo/gofunction.git ./gofunction
 
 build-lambda:
-	make -C ./lambda-repo all
+	make -C ./gofunction all
 
 clean:
-	rm -rf lambda-repo
+	rm -rf gofunction
